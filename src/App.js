@@ -16,15 +16,18 @@ import { AuthContext } from './shared/context/auth-context';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   console.log("%c Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.  in Auth (at App.js:58) (at http-hooks.js:34) (at Auth.js:70)", "color: yellow");
 
-  const login = useCallback(() => {
+  const login = useCallback((userId) => {
     setIsLoggedIn(true);
+    setUserId(userId);
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setUserId(null);
   }, []);
 
   let routes;
@@ -66,7 +69,12 @@ const App = () => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      value={{
+        isLoggedIn: isLoggedIn,
+        login: login,
+        logout: logout,
+        userId: userId,
+      }}
     >
       <Router>
         <MainNavigation />
